@@ -1,5 +1,6 @@
 package za.co.tyaphile.tenants.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,9 +20,8 @@ public class Tenant {
     private String phone;
     private double rentalFee;
 
-    @OneToOne(mappedBy = "tenant")
+    @ManyToOne
     private Room room;
-
 
     public Tenant(String name, String surname, String email, String phone, double rentalFee) {
         this.name = name;

@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,12 +22,12 @@ public class Room {
     private double totalRentalPrice;
     private double servicesCosts;
 
-//    @JsonIgnore
+    @JsonIgnore
     @ManyToOne
     private Building building;
 
-    @OneToOne
-    private Tenant tenant;
+    @OneToMany
+    private List<Tenant> tenant;
 
     public Room(String roomNumber, int tenantsOccupied, int totalTenants, double totalRentalPrice, double servicesCosts) {
         this.roomNumber = roomNumber;
