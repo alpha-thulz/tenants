@@ -1,0 +1,22 @@
+package za.co.tyaphile.tenants.dao;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class RoomDao {
+    @NotBlank(message = "Please enter the room number")
+    private String roomNumber;
+    private int tenantsOccupied;
+    @NotNull(message = "Please advise how many tenants can share the room, enter 1 if tenant will not share the room")
+    private int totalTenants;
+    @NotNull(message = "How much is the total rent of the room?")
+    private double totalRentalPrice;
+    private double servicesCosts;
+    private boolean isUnderMaintenance;
+}

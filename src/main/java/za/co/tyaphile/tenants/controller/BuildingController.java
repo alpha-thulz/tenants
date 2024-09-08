@@ -1,6 +1,7 @@
 package za.co.tyaphile.tenants.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import za.co.tyaphile.tenants.dao.BuildingDao;
 import za.co.tyaphile.tenants.model.Building;
@@ -20,8 +21,11 @@ public class BuildingController {
     }
 
     @GetMapping
-    public List<Building> getAllProperties() {
-        return buildingService.getAllBuildings();
+    public ResponseEntity<?> getAllProperties() {
+        List<Building> buildings = buildingService.getAllBuildings();
+        if (buildings.isEmpty())
+            return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(buildings);
     }
 
     @GetMapping("/{id}")

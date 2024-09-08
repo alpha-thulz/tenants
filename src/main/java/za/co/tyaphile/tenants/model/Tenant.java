@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,6 +21,8 @@ public class Tenant {
     private String email;
     private String phone;
     private double rentalFee;
+    private LocalDate rentalDate;
+    private LocalDate joinDate;
 
     @ManyToOne
     private Room room;

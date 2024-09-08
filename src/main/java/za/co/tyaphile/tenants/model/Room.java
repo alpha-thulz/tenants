@@ -21,19 +21,23 @@ public class Room {
     private int totalTenants;
     private double totalRentalPrice;
     private double servicesCosts;
+    private boolean isUnderMaintenance;
 
     @JsonIgnore
     @ManyToOne
     private Building building;
 
-    @OneToMany
+    @OneToMany(mappedBy = "room", orphanRemoval = true)
     private List<Tenant> tenant;
 
-    public Room(String roomNumber, int tenantsOccupied, int totalTenants, double totalRentalPrice, double servicesCosts) {
+    public Room(String roomNumber, int tenantsOccupied, int totalTenants, double totalRentalPrice,
+                double servicesCosts, boolean isUnderMaintenance, Building building) {
         this.roomNumber = roomNumber;
         this.tenantsOccupied = tenantsOccupied;
         this.totalTenants = totalTenants;
         this.totalRentalPrice = totalRentalPrice;
         this.servicesCosts = servicesCosts;
+        this.isUnderMaintenance = isUnderMaintenance;
+        this.building = building;
     }
 }
