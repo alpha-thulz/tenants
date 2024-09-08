@@ -22,6 +22,7 @@ public class UserDto {
     @NotBlank(message = "Email cannot be empty")
     @Email
     private String email;
-    @Pattern(regexp = "\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}")
+    @Pattern(regexp = "\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}",
+            message = "Please enter a valid phone number consisting of 10 numbers e.g: 0831234567")
     private String phone;
 }

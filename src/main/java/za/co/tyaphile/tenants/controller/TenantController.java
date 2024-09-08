@@ -23,31 +23,31 @@ public class TenantController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllTenants() {
+    public ResponseEntity<List<Tenant>> getAllTenants() {
         List<Tenant> tenants = tenantService.getAllTenants();
         if (tenants.isEmpty())
             return ResponseEntity.noContent().build();
         return ResponseEntity.ok(tenants);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getTenantById(@PathVariable String id) {
+    @GetMapping("/{tenantId}")
+    public ResponseEntity<Tenant> getTenantById(@PathVariable("tenantId") String id) {
         return ResponseEntity.ok(tenantService.getTenantById(id));
     }
 
-    @PostMapping("/{id}")
-    public ResponseEntity<?> createTenant(@PathVariable String id, @RequestBody @Valid TenantDto tenant) {
+    @PostMapping("/{roomId}")
+    public ResponseEntity<Tenant> createTenant(@PathVariable("roomId") String id, @RequestBody @Valid TenantDto tenant) {
         return ResponseEntity.status(HttpStatus.CREATED).body(tenantService.createTenant(id, tenant));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateTenant(@PathVariable String id, @RequestBody @Valid TenantDto tenant) {
+    @PutMapping("/{tenantId}")
+    public ResponseEntity<Tenant> updateTenant(@PathVariable("tenantId") String id, @RequestBody @Valid TenantDto tenant) {
         return ResponseEntity.ok(tenantService.updateTenant(id, tenant));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteTenant(@PathVariable String id) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/{tenantId}")
+    public void deleteTenant(@PathVariable("tenantId") String id) {
         tenantService.deleteTenant(id);
-        return ResponseEntity.noContent().build();
     }
 }

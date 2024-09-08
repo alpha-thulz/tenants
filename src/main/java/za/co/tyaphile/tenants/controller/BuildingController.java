@@ -23,31 +23,31 @@ public class BuildingController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllProperties() {
+    public ResponseEntity<List<Building>> getAllProperties() {
         List<Building> buildings = buildingService.getAllBuildings();
         if (buildings.isEmpty())
             return ResponseEntity.noContent().build();
         return ResponseEntity.ok(buildings);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getBuildingById(@PathVariable String id) {
-        return ResponseEntity.ok(buildingService.getBuildingById(id));
+    @GetMapping("/{buildingId}")
+    public ResponseEntity<Building> getBuildingById(@PathVariable("buildingId") String building_id) {
+        return ResponseEntity.ok(buildingService.getBuildingById(building_id));
     }
 
     @PostMapping("/{userID}")
-    public ResponseEntity<?> addBuilding(@PathVariable String userID, @RequestBody @Valid BuildingDto building) {
+    public ResponseEntity<Building> addBuilding(@PathVariable String userID, @RequestBody @Valid BuildingDto building) {
         return ResponseEntity.status(HttpStatus.CREATED).body(buildingService.createBuilding(userID, building));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateBuilding(@PathVariable String id, @RequestBody @Valid BuildingDto building) {
+    @PutMapping("/{buildingId}")
+    public ResponseEntity<Building> updateBuilding(@PathVariable("buildingId") String id, @RequestBody @Valid BuildingDto building) {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(buildingService.updateBuilding(id, building));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteBuilding(@PathVariable String id) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/{buildingId}")
+    public void deleteBuilding(@PathVariable("buildingId") String id) {
         buildingService.deleteBuilding(id);
-        return ResponseEntity.noContent().build();
     }
 }

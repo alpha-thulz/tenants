@@ -26,7 +26,7 @@ public class User{
     private String lastName;
     @Column(unique = true, nullable = false)
     private String email;
-    @Pattern(regexp = "^[+]?(\\d{1,2})?[\\s.-]?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$")
+    @Pattern(regexp = "\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}")
     private String phone;
 
     @OneToMany(mappedBy ="user", orphanRemoval = true)

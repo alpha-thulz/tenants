@@ -29,7 +29,8 @@ public class ErrorHandler {
     @ExceptionHandler(ConstraintViolationException.class)
     public Map<String, String> handle(ConstraintViolationException ex) {
         Map<String, String> errors = new HashMap<>();
-        ex.getConstraintViolations().forEach(error -> errors.put("message", "Invalid data entered for " + error.getPropertyPath().toString()));
+        ex.getConstraintViolations().forEach(error ->
+                errors.put("message", "Invalid data entered for " + error.getPropertyPath().toString()));
         return errors;
     }
 

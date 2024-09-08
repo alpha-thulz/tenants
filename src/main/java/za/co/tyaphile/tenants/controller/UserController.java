@@ -23,34 +23,33 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getUsers() {
+    public ResponseEntity<List<User>> getUsers() {
         List<User> users = userService.getAllUsers();
         if (users.isEmpty())
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         return ResponseEntity.ok(users);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getUser(@PathVariable String id) {
-        User user = userService.getUserById(id);
-        if (user == null)
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/{userId}")
+    public ResponseEntity<User> getUser(@PathVariable("userId") String user_id) {
+        User user = userService.getUserById(user_id);
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 
     @PostMapping
-    public ResponseEntity<?> createUser(@RequestBody @Valid UserDto user) {
+    public ResponseEntity<User> createUser(@RequestBody @Valid UserDto user) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(user));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable String id, @RequestBody @Valid UserDto user) {
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(userService.updateUser(id, user));
+    @PutMapping("/{userId}")
+    public ResponseEntity<User> updateUser(@PathVariable("userId") String user_id, @RequestBody @Valid UserDto user) {
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(userService.updateUser(user_id, user));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteUser(@PathVariable String id) {
-        userService.deleteUser(id);
-        return ResponseEntity.noContent().build();
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/{userId}")
+    public void deleteUser(@PathVariable("userId") String user_id) {
+        userService.deleteUser(user_id);
     }
 }

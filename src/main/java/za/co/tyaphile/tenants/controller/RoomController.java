@@ -23,7 +23,7 @@ public class RoomController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllRooms() {
+    public ResponseEntity<List<Room>> getAllRooms() {
         List<Room> rooms = roomService.findAllRoom();
 
         if (rooms.isEmpty()) {
@@ -32,25 +32,25 @@ public class RoomController {
         return ResponseEntity.ok(rooms);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getRoomById(@PathVariable("id") String id) {
+    @GetMapping("/{roomId}")
+    public ResponseEntity<Room> getRoomById(@PathVariable("roomId") String id) {
         Room room = roomService.findRoomById(id);
         return ResponseEntity.ok(room);
     }
 
     @PostMapping("/{buildingId}")
-    public ResponseEntity<?> createRoom(@PathVariable("buildingId") String buildingId, @RequestBody @Valid RoomDto room) {
+    public ResponseEntity<Room> createRoom(@PathVariable("buildingId") String buildingId, @RequestBody @Valid RoomDto room) {
         return ResponseEntity.status(HttpStatus.CREATED).body(roomService.addRoom(buildingId, room));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateRoom(@PathVariable String id, @RequestBody @Valid RoomDto room) {
+    @PutMapping("/{roomId}")
+    public ResponseEntity<Room> updateRoom(@PathVariable("roomId") String id, @RequestBody @Valid RoomDto room) {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(roomService.updateRoom(id, room));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteRoom(@PathVariable String id) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/{roomId}")
+    public void deleteRoom(@PathVariable("roomId") String id) {
         roomService.deleteRoom(id);
-        return ResponseEntity.noContent().build();
     }
 }
