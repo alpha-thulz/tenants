@@ -12,7 +12,7 @@ import java.util.List;
 @RequestMapping("/api/v1/property")
 public class BuildingController {
 
-    private BuildingService buildingService;
+    private final BuildingService buildingService;
 
     @Autowired
     public BuildingController(BuildingService buildingService) {

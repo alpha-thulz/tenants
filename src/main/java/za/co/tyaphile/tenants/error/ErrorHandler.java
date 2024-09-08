@@ -20,9 +20,7 @@ public class ErrorHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Map<String, String> handle(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getFieldErrors().forEach(error -> {
-            errors.put(error.getField(), error.getDefaultMessage());
-        });
+        ex.getBindingResult().getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
         return errors;
     }
 
@@ -30,9 +28,7 @@ public class ErrorHandler {
     @ExceptionHandler(ConstraintViolationException.class)
     public Map<String, String> handle(ConstraintViolationException ex) {
         Map<String, String> errors = new HashMap<>();
-        ex.getConstraintViolations().forEach(error -> {
-                errors.put("message", "Invalid data entered for " + error.getPropertyPath().toString());
-        });
+        ex.getConstraintViolations().forEach(error -> errors.put("message", "Invalid data entered for " + error.getPropertyPath().toString()));
         return errors;
     }
 
