@@ -24,14 +24,19 @@ public class Tenant {
     private LocalDate rentalDate;
     private LocalDate joinDate;
 
+    @JsonIgnore
     @ManyToOne
     private Room room;
 
-    public Tenant(String name, String surname, String email, String phone, double rentalFee) {
+    public Tenant(String name, String surname, String email, String phone, double rentalFee, LocalDate rentalDate,
+                  LocalDate joinDate, Room room) {
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.phone = phone;
         this.rentalFee = rentalFee;
+        this.rentalDate = rentalDate;
+        this.joinDate = joinDate;
+        this.room = room;
     }
 }

@@ -17,7 +17,6 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
     private String roomNumber;
-    private int tenantsOccupied;
     private int totalTenants;
     private double totalRentalPrice;
     private double servicesCosts;
@@ -30,10 +29,9 @@ public class Room {
     @OneToMany(mappedBy = "room", orphanRemoval = true)
     private List<Tenant> tenant;
 
-    public Room(String roomNumber, int tenantsOccupied, int totalTenants, double totalRentalPrice,
+    public Room(String roomNumber, int totalTenants, double totalRentalPrice,
                 double servicesCosts, boolean isUnderMaintenance, Building building) {
         this.roomNumber = roomNumber;
-        this.tenantsOccupied = tenantsOccupied;
         this.totalTenants = totalTenants;
         this.totalRentalPrice = totalRentalPrice;
         this.servicesCosts = servicesCosts;

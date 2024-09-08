@@ -2,7 +2,7 @@ package za.co.tyaphile.tenants.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import za.co.tyaphile.tenants.dao.UserDao;
+import za.co.tyaphile.tenants.dto.UserDto;
 import za.co.tyaphile.tenants.model.User;
 import za.co.tyaphile.tenants.repo.UserRepo;
 
@@ -27,13 +27,13 @@ public class UserService {
         return userRepo.findAll();
     }
 
-    public User createUser(UserDao user) {
+    public User createUser(UserDto user) {
         String password = Base64.getEncoder().encodeToString(user.getPassword().getBytes());
         User newUser = new User(user.getUsername(), password, user.getFirstName(), user.getLastName(), user.getEmail(), user.getPhone());
         return userRepo.save(newUser);
     }
 
-    public User updateUser(String id, UserDao user) {
+    public User updateUser(String id, UserDto user) {
         getUserById(id);
         String password = Base64.getEncoder().encodeToString(user.getPassword().getBytes());
         User updatedDetails = new User(id, user.getUsername(), password, user.getFirstName(), user.getLastName(), user.getEmail(), user.getPhone());

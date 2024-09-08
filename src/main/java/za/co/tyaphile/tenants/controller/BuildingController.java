@@ -1,9 +1,11 @@
 package za.co.tyaphile.tenants.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import za.co.tyaphile.tenants.dao.BuildingDao;
+import za.co.tyaphile.tenants.dto.BuildingDto;
 import za.co.tyaphile.tenants.model.Building;
 import za.co.tyaphile.tenants.service.BuildingService;
 
@@ -29,12 +31,23 @@ public class BuildingController {
     }
 
     @GetMapping("/{id}")
-    public Building getBuildingById(@PathVariable String id) {
-        return buildingService.getBuildingById(id);
+    public ResponseEntity<?> getBuildingById(@PathVariable String id) {
+        return ResponseEntity.ok(buildingService.getBuildingById(id));
     }
 
     @PostMapping("/{userID}")
-    public Building addBuilding(@PathVariable String userID, @RequestBody BuildingDao building) {
-        return buildingService.createBuilding(userID, building);
+    public ResponseEntity<?> addBuilding(@PathVariable String userID, @RequestBody @Valid BuildingDto building) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(buildingService.createBuilding(userID, building));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateBuilding(@PathVariable String id, @RequestBody @Valid BuildingDto building) {
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(buildingService.updateBuilding(id, building));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteBuilding(@PathVariable String id) {
+        buildingService.deleteBuilding(id);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import za.co.tyaphile.tenants.dao.UserDao;
+import za.co.tyaphile.tenants.dto.UserDto;
 import za.co.tyaphile.tenants.model.User;
 import za.co.tyaphile.tenants.service.UserService;
 
@@ -39,12 +39,12 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createUser(@RequestBody @Valid UserDao user) {
+    public ResponseEntity<?> createUser(@RequestBody @Valid UserDto user) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(user));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateUser(@PathVariable String id, @RequestBody @Valid UserDao user) {
+    public ResponseEntity<?> updateUser(@PathVariable String id, @RequestBody @Valid UserDto user) {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(userService.updateUser(id, user));
     }
 

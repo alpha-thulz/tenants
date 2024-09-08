@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import za.co.tyaphile.tenants.dao.RoomDao;
+import za.co.tyaphile.tenants.dto.RoomDto;
 import za.co.tyaphile.tenants.model.Room;
 import za.co.tyaphile.tenants.service.RoomService;
 
@@ -39,12 +39,12 @@ public class RoomController {
     }
 
     @PostMapping("/{buildingId}")
-    public ResponseEntity<?> createRoom(@PathVariable("buildingId") String buildingId, @RequestBody @Valid RoomDao room) {
+    public ResponseEntity<?> createRoom(@PathVariable("buildingId") String buildingId, @RequestBody @Valid RoomDto room) {
         return ResponseEntity.status(HttpStatus.CREATED).body(roomService.addRoom(buildingId, room));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateRoom(@PathVariable String id, @RequestBody @Valid RoomDao room) {
+    public ResponseEntity<?> updateRoom(@PathVariable String id, @RequestBody @Valid RoomDto room) {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(roomService.updateRoom(id, room));
     }
 

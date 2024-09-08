@@ -1,7 +1,7 @@
 package za.co.tyaphile.tenants.repo;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import za.co.tyaphile.tenants.model.Tenant;
 
-public interface TenantRepo extends CrudRepository<Tenant, String> {
+public interface TenantRepo extends JpaRepository<Tenant, String> {
 }

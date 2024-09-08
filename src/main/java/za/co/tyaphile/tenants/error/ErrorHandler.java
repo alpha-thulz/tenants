@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -52,5 +53,11 @@ public class ErrorHandler {
     @ExceptionHandler(IndexOutOfBoundsException.class)
     public Map<String, String> handle(IndexOutOfBoundsException ex) {
         return Map.of("message", ex.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(DateTimeParseException.class)
+    public Map<String, String> handle(DateTimeParseException ex) {
+        return Map.of("message", "Data entered is not valid", "details", ex.getMessage());
     }
 }
