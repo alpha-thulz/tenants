@@ -22,6 +22,7 @@ public class TenantDto {
     private String email;
     @Pattern(regexp = "\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}",
             message = "Please enter a valid phone number consisting of 10 numbers e.g: 0831234567")
+    @NotBlank
     private String phone;
     @NotNull(message = "Please enter amount the tenant will have to pay monthly")
     private double rentalFee;

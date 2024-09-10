@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Tenant Management System</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    </head>
+    <body class="container-fluid">
+        <section>
+            <div>
+
+                <table class="table table-dark">
+                    <thead>
+                        <tr>
+                            <td colspan="9" style="text-align: center"><h3>Building Owners</h3></td>
+                            <td colspan="2" style="text-align: center">
+                                <button type="submit" class="btn btn-primary" onclick="location.href='./new_user'">Add Owner</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Name</td>
+                            <td>Surname</td>
+                            <td>Username</td>
+                            <td>Email</td>
+                            <td>Cellphone</td>
+                            <td>Member since</td>
+                            <td>No. of properties</td>
+                            <td colspan="2" style="text-align: center">Maintain building</td>
+                            <td colspan="2">Maintain Owner</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="user: ${users}">
+                            <td th:text="${user.getFirstName()}"/>
+                            <td th:text="${user.getLastName()}"/>
+                            <td th:text="${user.getUsername()}"/>
+                            <td th:text="${user.getEmail()}"/>
+                            <td th:text="${user.getPhone()}"/>
+                            <td th:text="${user.getCreatedAt()}"/>
+                            <td th:text="${user.getBuilding().size()}"/>
+                            <td><button type="submit" class="btn btn-primary">Add</button></td>
+                            <td><button type="submit" class="btn btn-success">View</button></td>
+                            <td>
+                                <a th:href="@{'/user_details/' + ${user.getId()}}">
+                                    <button type="button" class="btn btn-info">Info</button>
+                                </a>
+                            </td>
+                            <td><button type="submit" class="btn btn-danger">Delete</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </body>
+</html>

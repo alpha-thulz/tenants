@@ -38,7 +38,7 @@ public class TenantService {
         LocalDate rentalDate = getRentalDate(tenant.getRentalDate());
 
         Tenant newTenant = new Tenant(tenant.getName(), tenant.getSurname(), tenant.getEmail(), tenant.getPhone(),
-                tenant.getRentalFee(), rentalDate, LocalDate.now(), room);
+                tenant.getRentalFee(), rentalDate, room);
         return repo.save(newTenant);
     }
 
@@ -47,7 +47,7 @@ public class TenantService {
         LocalDate rentalDate = getRentalDate(tenant.getRentalDate());
 
         Tenant updateTenant = new Tenant(oldTenant.getId(), tenant.getName(), tenant.getSurname(), tenant.getEmail(),
-                tenant.getPhone(), tenant.getRentalFee(), rentalDate, oldTenant.getJoinDate(), oldTenant.getRoom());
+                tenant.getPhone(), tenant.getRentalFee(), rentalDate, oldTenant.getCreatedAt(), oldTenant.getRoom());
         return repo.save(updateTenant);
     }
 

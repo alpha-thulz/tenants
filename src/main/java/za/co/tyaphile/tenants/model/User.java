@@ -6,7 +6,9 @@ import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -28,6 +30,8 @@ public class User{
     private String email;
     @Pattern(regexp = "\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}")
     private String phone;
+    @CreationTimestamp
+    private LocalDate createdAt;
 
     @OneToMany(mappedBy ="user", orphanRemoval = true)
     private List<Building> building;

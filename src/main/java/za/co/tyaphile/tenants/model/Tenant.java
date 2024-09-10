@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
 
@@ -24,21 +25,20 @@ public class Tenant {
     private String phone;
     private double rentalFee;
     private LocalDate rentalDate;
-    private LocalDate joinDate;
+    @CreationTimestamp
+    private LocalDate createdAt;
 
     @JsonIgnore
     @ManyToOne
     private Room room;
 
-    public Tenant(String name, String surname, String email, String phone, double rentalFee, LocalDate rentalDate,
-                  LocalDate joinDate, Room room) {
+    public Tenant(String name, String surname, String email, String phone, double rentalFee, LocalDate rentalDate, Room room) {
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.phone = phone;
         this.rentalFee = rentalFee;
         this.rentalDate = rentalDate;
-        this.joinDate = joinDate;
         this.room = room;
     }
 }
