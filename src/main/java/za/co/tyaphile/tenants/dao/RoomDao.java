@@ -1,8 +1,7 @@
-package za.co.tyaphile.tenants.dto;
+package za.co.tyaphile.tenants.dao;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class RoomDto {
+public class RoomDao {
     @NotBlank(message = "Please enter the room number")
     private String roomNumber;
     @NotNull(message = "Please advise how many tenants can share the room, enter 1 if tenant will not share the room")

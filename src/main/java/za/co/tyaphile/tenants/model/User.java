@@ -2,56 +2,67 @@ package za.co.tyaphile.tenants.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import za.co.tyaphile.tenants.model.role.Role;
 
-import java.time.LocalDate;
+import java.util.Collection;
 import java.util.List;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Entity
-@Table(name = "users_tbl")
-public class User{
+@Table(name = "user_tbl")
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
-    @Column(unique = true, nullable = false)
+    @NotBlank(message = "First name cannot be blank")
+    private String firstname;
+    @NotBlank(message = "Last name cannot be blank")
+    private String lastname;
+    @NotBlank(message = "Username cannot be blank")
+//    @Column(unique = true, name = "Username already taken, please choose a different username")
     private String username;
     @JsonIgnore
+//    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
+//            message = "Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character required")
     private String password;
-    private String firstName;
-    private String lastName;
-    @Column(unique = true, nullable = false)
+    @Email(message = "Please enter your email address")
     private String email;
-    @Pattern(regexp = "\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}")
-    private String phone;
-    @CreationTimestamp
-    private LocalDate createdAt;
+    private boolean enabled;
+    @Enumerated
+    private Role role;
 
     @OneToMany(mappedBy ="user", orphanRemoval = true)
     private List<Building> building;
 
-    public User(String username, String password, String firstName, String lastName, String email, String phone) {
-        this.username = username;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.phone = phone;
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
-    public User(String id, String username, String password, String firstName, String lastName, String email, String phone) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.phone = phone;
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
     }
 }

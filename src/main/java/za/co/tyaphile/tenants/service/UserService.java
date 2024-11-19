@@ -1,54 +1,77 @@
 package za.co.tyaphile.tenants.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import za.co.tyaphile.tenants.dto.UserDto;
+import za.co.tyaphile.tenants.dao.UserDao;
 import za.co.tyaphile.tenants.model.User;
 import za.co.tyaphile.tenants.repo.UserRepo;
 
-import java.util.Base64;
 import java.util.List;
+import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
+    private final UserRepo repo;
+    private final BCryptPasswordEncoder encoder;
+    private final AuthenticationManager authenticationManager;
+    private final JWTService tokenService;
 
-    private final UserRepo userRepo;
-
-    @Autowired
-    public UserService(UserRepo userRepo) {
-        this.userRepo = userRepo;
+    public List<User> getUsers() {
+        return repo.findAll();
     }
 
-    public User getUserById(String id) {
-        return userRepo.findById(id).orElseThrow(() -> new IndexOutOfBoundsException("User with id '" + id + "' not found"));
+    public User getUser(String id) {
+        return repo.findById(id).orElseThrow(() -> new UsernameNotFoundException("User ID " + id + " not found"));
     }
 
-    public List<User> getAllUsers() {
-        return userRepo.findAll();
+    public Map<String, Object> login(UserDao dao) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(dao.getUsername(), dao.getPassword()));
+        if (authentication.isAuthenticated()) {
+            return tokenService.generateToken(dao.getUsername());
+        }
+        return null;
     }
 
-    public User createUser(UserDto user) {
-        String password = Base64.getEncoder().encodeToString(user.getPassword().getBytes());
-        User newUser = new User(user.getUsername(), password, user.getFirstName(), user.getLastName(), user.getEmail(), user.getPhone());
-        return userRepo.save(newUser);
+    public Map<String, Object> createUser(UserDao dao) {
+        if (repo.findByUsername(dao.getUsername()).isPresent())
+            throw new RuntimeException("Username already exists");
+
+        User user = User.builder()
+                .firstname(dao.getFirstname())
+                .lastname(dao.getLastname())
+                .username(dao.getUsername())
+                .password(encoder.encode(dao.getPassword()))
+                .email(dao.getEmail())
+                .enabled(dao.isEnabled())
+                .role(dao.getRole())
+                .build();
+
+        repo.save(user);
+        return tokenService.generateToken(user.getUsername());
     }
 
-    public User updateUser(String id, UserDto user) {
-        String password = Base64.getEncoder().encodeToString(user.getPassword().getBytes());
+    public User updateUser(String id, UserDao dao) {
+        User user = getUser(id);
+        user.setFirstname(dao.getFirstname());
+        user.setLastname(dao.getFirstname());
+        user.setUsername(dao.getUsername());
+        user.setPassword(encoder.encode(dao.getPassword()));
+        user.setEmail(dao.getEmail());
+        user.setEnabled(dao.isEnabled());
+        user.setRole(dao.getRole());
 
-        User updateUser = getUserById(id);
-        updateUser.setUsername(user.getUsername());
-        updateUser.setPassword(password);
-        updateUser.setFirstName(user.getFirstName());
-        updateUser.setLastName(user.getLastName());
-        updateUser.setEmail(user.getEmail());
-        updateUser.setPhone(user.getPhone());
-
-        return userRepo.save(updateUser);
+        return repo.save(user);
     }
 
     public void deleteUser(String id) {
-        getUserById(id);
-        userRepo.deleteById(id);
+        User user = getUser(id);
+        repo.delete(user);
     }
 }

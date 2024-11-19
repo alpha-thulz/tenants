@@ -1,4 +1,4 @@
-package za.co.tyaphile.tenants.dto;
+package za.co.tyaphile.tenants.dao;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TenantDto {
+public class TenantDao {
     @NotBlank(message = "Please enter tenant's first (and second if available) name")
     private String name;
     @NotBlank(message = "Please enter a valid tenant Surname")

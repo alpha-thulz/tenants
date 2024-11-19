@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import za.co.tyaphile.tenants.dto.TenantDto;
+import za.co.tyaphile.tenants.dao.TenantDao;
 import za.co.tyaphile.tenants.model.Tenant;
 import za.co.tyaphile.tenants.service.TenantService;
 
@@ -36,12 +36,12 @@ public class TenantController {
     }
 
     @PostMapping("/{roomId}")
-    public ResponseEntity<Tenant> createTenant(@PathVariable("roomId") String id, @RequestBody @Valid TenantDto tenant) {
+    public ResponseEntity<Tenant> createTenant(@PathVariable("roomId") String id, @RequestBody @Valid TenantDao tenant) {
         return ResponseEntity.status(HttpStatus.CREATED).body(tenantService.createTenant(id, tenant));
     }
 
     @PutMapping("/{tenantId}")
-    public ResponseEntity<Tenant> updateTenant(@PathVariable("tenantId") String id, @RequestBody @Valid TenantDto tenant) {
+    public ResponseEntity<Tenant> updateTenant(@PathVariable("tenantId") String id, @RequestBody @Valid TenantDao tenant) {
         return ResponseEntity.ok(tenantService.updateTenant(id, tenant));
     }
 

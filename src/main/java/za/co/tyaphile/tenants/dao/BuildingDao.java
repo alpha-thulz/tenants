@@ -1,4 +1,4 @@
-package za.co.tyaphile.tenants.dto;
+package za.co.tyaphile.tenants.dao;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class BuildingDto {
+public class BuildingDao {
     @NotBlank(message = "Building name cannot be empty")
     private String name;
     @NotBlank(message = "Building address cannot be empty")

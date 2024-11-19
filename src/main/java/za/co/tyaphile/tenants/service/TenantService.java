@@ -2,7 +2,7 @@ package za.co.tyaphile.tenants.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import za.co.tyaphile.tenants.dto.TenantDto;
+import za.co.tyaphile.tenants.dao.TenantDao;
 import za.co.tyaphile.tenants.model.Room;
 import za.co.tyaphile.tenants.model.Tenant;
 import za.co.tyaphile.tenants.repo.TenantRepo;
@@ -30,7 +30,7 @@ public class TenantService {
         return repo.findById(id).orElseThrow(() -> new IndexOutOfBoundsException("Cannot find tenant with id " + id));
     }
 
-    public Tenant createTenant(String id, TenantDto tenant) {
+    public Tenant createTenant(String id, TenantDao tenant) {
         Room room = roomService.findRoomById(id);
         if (room.getTenant().size() >= room.getTotalTenants())
             throw new IndexOutOfBoundsException(String.format("Room %s, cannot add another tenant to this room", room.getRoomNumber()));
@@ -42,7 +42,7 @@ public class TenantService {
         return repo.save(newTenant);
     }
 
-    public Tenant updateTenant(String id, TenantDto tenant) {
+    public Tenant updateTenant(String id, TenantDao tenant) {
         Tenant oldTenant = getTenantById(id);
         LocalDate rentalDate = getRentalDate(tenant.getRentalDate());
 

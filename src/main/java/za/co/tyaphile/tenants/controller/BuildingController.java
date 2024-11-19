@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import za.co.tyaphile.tenants.dto.BuildingDto;
+import za.co.tyaphile.tenants.dao.BuildingDao;
 import za.co.tyaphile.tenants.model.Building;
 import za.co.tyaphile.tenants.service.BuildingService;
 
@@ -36,12 +36,12 @@ public class BuildingController {
     }
 
     @PostMapping("/{userID}")
-    public ResponseEntity<Building> addBuilding(@PathVariable String userID, @RequestBody @Valid BuildingDto building) {
+    public ResponseEntity<Building> addBuilding(@PathVariable String userID, @RequestBody @Valid BuildingDao building) {
         return ResponseEntity.status(HttpStatus.CREATED).body(buildingService.createBuilding(userID, building));
     }
 
     @PutMapping("/{buildingId}")
-    public ResponseEntity<Building> updateBuilding(@PathVariable("buildingId") String id, @RequestBody @Valid BuildingDto building) {
+    public ResponseEntity<Building> updateBuilding(@PathVariable("buildingId") String id, @RequestBody @Valid BuildingDao building) {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(buildingService.updateBuilding(id, building));
     }
 

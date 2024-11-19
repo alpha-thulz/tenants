@@ -1,6 +1,8 @@
 package za.co.tyaphile.tenants.error;
 
+import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -13,10 +15,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @RestControllerAdvice
+@RequiredArgsConstructor
 public class ErrorHandler {
-
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Map<String, String> handle(MethodArgumentNotValidException ex) {
@@ -25,12 +28,19 @@ public class ErrorHandler {
         return errors;
     }
 
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(RuntimeException.class)
+    public Map<String, String> handle(RuntimeException ex) {
+        return Map.of("message", ex.getMessage());
+    }
+
     @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
     @ExceptionHandler(ConstraintViolationException.class)
     public Map<String, String> handle(ConstraintViolationException ex) {
         Map<String, String> errors = new HashMap<>();
-        ex.getConstraintViolations().forEach(error ->
-                errors.put("message", "Invalid data entered for " + error.getPropertyPath().toString()));
+        String message = ex.getConstraintViolations().stream()
+                .map(ConstraintViolation::getMessage).collect(Collectors.joining("\r\n"));
+        errors.put("message", message);
         return errors;
     }
 
