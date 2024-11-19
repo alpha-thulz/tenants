@@ -11,6 +11,7 @@ import za.co.tyaphile.tenants.dao.UserDao;
 import za.co.tyaphile.tenants.model.User;
 import za.co.tyaphile.tenants.repo.UserRepo;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +35,10 @@ public class UserService {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(dao.getUsername(), dao.getPassword()));
         if (authentication.isAuthenticated()) {
-            return tokenService.generateToken(dao.getUsername());
+            User user = (User) authentication.getPrincipal();
+            Map<String, Object> token = new HashMap<>(tokenService.generateToken(user.getUsername()));
+            token.put("user_id", user.getId());
+            return token;
         }
         return null;
     }
@@ -54,7 +58,9 @@ public class UserService {
                 .build();
 
         repo.save(user);
-        return tokenService.generateToken(user.getUsername());
+        Map<String, Object> token = new HashMap<>(tokenService.generateToken(user.getUsername()));
+        token.put("user_id", user.getId());
+        return token;
     }
 
     public User updateUser(String id, UserDao dao) {
