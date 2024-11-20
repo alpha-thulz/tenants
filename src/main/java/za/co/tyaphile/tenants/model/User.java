@@ -36,8 +36,8 @@ public class User implements UserDetails {
     private String username;
     @JsonIgnore
     @NotBlank(message = "Password cannot be blank")
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
-            message = "Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character required")
+//    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
+//            message = "Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character required")
     private String password;
     @Email(message = "Please enter your email address")
     private String email;

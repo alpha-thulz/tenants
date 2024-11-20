@@ -14,6 +14,8 @@ import za.co.tyaphile.tenants.repo.UserRepo;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 @RequiredArgsConstructor
@@ -46,6 +48,13 @@ public class UserService {
     public Map<String, Object> createUser(UserDao dao) {
         if (repo.findByUsername(dao.getUsername()).isPresent())
             throw new RuntimeException("Username already exists");
+
+        String regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
+
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(dao.getPassword());
+        if (!matcher.matches())
+            throw new RuntimeException("Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character required");
 
         User user = User.builder()
                 .firstname(dao.getFirstname())
