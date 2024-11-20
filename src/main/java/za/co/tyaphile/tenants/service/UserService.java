@@ -50,17 +50,23 @@ public class UserService {
             throw new RuntimeException("Username already exists");
 
         String regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
+        String password = dao.getPassword();
+        String error = "Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character required";
+
+        if (password == null || password.isBlank()) {
+            throw new RuntimeException("Password cannot be empty");
+        }
 
         Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(dao.getPassword());
+        Matcher matcher = pattern.matcher(password);
         if (!matcher.matches())
-            throw new RuntimeException("Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character required");
+            throw new RuntimeException(error);
 
         User user = User.builder()
                 .firstname(dao.getFirstname())
                 .lastname(dao.getLastname())
                 .username(dao.getUsername())
-                .password(encoder.encode(dao.getPassword()))
+                .password(encoder.encode(password))
                 .email(dao.getEmail())
                 .enabled(dao.isEnabled())
                 .role(dao.getRole())
