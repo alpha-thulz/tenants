@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -34,8 +35,9 @@ public class User implements UserDetails {
 //    @Column(unique = true, name = "Username already taken, please choose a different username")
     private String username;
     @JsonIgnore
-//    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
-//            message = "Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character required")
+    @NotBlank(message = "Password cannot be blank")
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
+            message = "Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character required")
     private String password;
     @Email(message = "Please enter your email address")
     private String email;
