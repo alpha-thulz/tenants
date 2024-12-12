@@ -8,45 +8,42 @@
     <body class="container-fluid">
         <section>
             <div>
-
+                <h1>Tenant Management System</h1>
+                <p>
+                    This is the <strong>Tenant Management System</strong> application template.
+                </p>
+                <p>
+                    Below are current registered users with access to the API, when using the API please do not use your real email
+                    address as the system does not valid if the email address is registered to anyone, the system is only for
+                    <strong>training purposes</strong> only and no real data should be used, especially personal information.
+                </p>
+                <sub>
+                    The data is not retained, on every deploy data will be lost.
+                </sub>
+            </div>
+            <div>
                 <table class="table table-dark">
                     <thead>
                         <tr>
-                            <td colspan="9" style="text-align: center"><h3>Building Owners</h3></td>
-                            <td colspan="2" style="text-align: center">
-                                <button type="submit" class="btn btn-primary" onclick="location.href='./new_user'">Add Owner</button>
-                            </td>
+                            <td colspan="6" style="text-align: center"><h3>Building Owners</h3></td>
                         </tr>
                         <tr>
                             <td>Name</td>
                             <td>Surname</td>
                             <td>Username</td>
                             <td>Email</td>
-                            <td>Cellphone</td>
-                            <td>Member since</td>
-                            <td>No. of properties</td>
-                            <td colspan="2" style="text-align: center">Maintain building</td>
-                            <td colspan="2">Maintain Owner</td>
+                            <td>Enabled</td>
+                            <td>Role</td>
                         </tr>
                     </thead>
                     <tbody>
                         <tr th:each="user: ${users}">
-                            <td th:text="${user.getFirstName()}"/>
-                            <td th:text="${user.getLastName()}"/>
+                            <td th:text="${user.getFirstname()}"/>
+                            <td th:text="${user.getLastname()}"/>
                             <td th:text="${user.getUsername()}"/>
                             <td th:text="${user.getEmail()}"/>
-                            <td th:text="${user.getPhone()}"/>
-                            <td th:text="${user.getCreatedAt()}"/>
-                            <td th:text="${user.getBuilding().size()}"/>
-                            <td><button type="submit" class="btn btn-primary">Add</button></td>
-                            <td><button type="submit" class="btn btn-success">View</button></td>
-                            <td>
-                                <a th:href="@{'/user_details/' + ${user.getId()}}">
-                                    <button type="button" class="btn btn-info">Info</button>
-                                </a>
-                            </td>
-                            <td><button type="submit" class="btn btn-danger">Delete</button></td>
-                        </tr>
+                            <td th:text="${user.isEnabled()}"/>
+                            <td th:text="${user.getRole()}"/>
                     </tbody>
                 </table>
             </div>
