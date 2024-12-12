@@ -1,5 +1,12 @@
 package za.co.tyaphile.tenants.config;
 
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Contact;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -46,10 +53,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
+//                .cors(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/api/v1/users/login", "/api/v1/users/register",
-                                "swagger-ui/**", "/v3/api-docs/**", "/v2/api-docs",
+                                "/swagger-ui/**", "/v3/api-docs/**", "/v2/api-docs",
                                 "/configuration/ui",  "/swagger-resources/**",
                                 "/configuration/security", "/swagger-ui.html",
                                 "/webjars/**").permitAll()
@@ -60,5 +68,33 @@ public class SecurityConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
+    }
+
+    @Bean
+    public OpenAPI openAPI() {
+        return new OpenAPI()
+                .addSecurityItem(
+                        new SecurityRequirement().addList("Bearer Authentication")
+                )
+                .components(
+                        new Components().addSecuritySchemes("Bearer Authentication", createAPIKeyScheme())
+                )
+                .info(
+                        new Info().title("Tenants and Buildings API")
+                                .description("API used to managed properties of registered users, also maintain " +
+                                        "vacant and occupied rooms at any property owned.")
+                                .version("1.0").contact(
+                                        new Contact()
+                                                .name("Thulani Tyaphile")
+                                                .email("tj.tyaphile@gmail.com")
+                                                .url("www.wedela.co.za")
+                                )
+                );
+    }
+
+    private SecurityScheme createAPIKeyScheme() {
+        return new SecurityScheme().type(SecurityScheme.Type.HTTP)
+                .bearerFormat("JWT")
+                .scheme("bearer");
     }
 }

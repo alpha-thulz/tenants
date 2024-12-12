@@ -20,7 +20,7 @@ public class JWTService {
 
     private final String SECRET_KEY;
     private final String PASSWORD = "Password";
-    private final int MINUTES = 2;
+    private final int MINUTES = 30;
 
     public JWTService() {
         this.SECRET_KEY = new StandardPasswordEncoder().encode(PASSWORD);

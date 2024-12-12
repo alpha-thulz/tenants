@@ -7,6 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import za.co.tyaphile.tenants.dao.LoginDao;
 import za.co.tyaphile.tenants.dao.UserDao;
 import za.co.tyaphile.tenants.model.User;
 import za.co.tyaphile.tenants.repo.UserRepo;
@@ -33,7 +34,7 @@ public class UserService {
         return repo.findById(id).orElseThrow(() -> new UsernameNotFoundException("User ID " + id + " not found"));
     }
 
-    public Map<String, Object> login(UserDao dao) {
+    public Map<String, Object> login(LoginDao dao) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(dao.getUsername(), dao.getPassword()));
         if (authentication.isAuthenticated()) {
