@@ -53,7 +53,6 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-//                .cors(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/api/v1/users/login", "/api/v1/users/register",
@@ -80,10 +79,12 @@ public class SecurityConfig {
                         new Components().addSecuritySchemes("Bearer Authentication", createAPIKeyScheme())
                 )
                 .info(
-                        new Info().title("Tenants and Buildings API")
+                        new Info()
+                                .title("Tenants and Buildings API")
                                 .description("API used to managed properties of registered users, also maintain " +
                                         "vacant and occupied rooms at any property owned.")
-                                .version("1.0").contact(
+                                .version("1.0")
+                                .contact(
                                         new Contact()
                                                 .name("Thulani Tyaphile")
                                                 .email("tj.tyaphile@gmail.com")
