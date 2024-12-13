@@ -82,9 +82,10 @@ public class UserService {
     public User updateUser(String id, UserDao dao) {
         User user = getUser(id);
         user.setFirstname(dao.getFirstname());
-        user.setLastname(dao.getFirstname());
+        user.setLastname(dao.getLastname());
         user.setUsername(dao.getUsername());
-        user.setPassword(encoder.encode(dao.getPassword()));
+        if (dao.getPassword() != null && !dao.getPassword().isBlank())
+            user.setPassword(encoder.encode(dao.getPassword()));
         user.setEmail(dao.getEmail());
         user.setEnabled(dao.isEnabled());
         user.setRole(dao.getRole());
