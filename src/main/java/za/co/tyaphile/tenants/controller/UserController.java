@@ -29,7 +29,7 @@ public class UserController {
 
     @Operation(summary = "Used to get a user by ID")
     @GetMapping("{id}")
-    public ResponseEntity<Object> getUserById(@PathVariable String id) {
+    public ResponseEntity<Object> getUserById(@PathVariable("id") String id) {
         try {
             return ResponseEntity.ok(userService.getUser(id));
         } catch (UsernameNotFoundException e) {
@@ -51,13 +51,13 @@ public class UserController {
 
     @Operation(summary = "Used to update a user matching ID")
     @PutMapping("{id}")
-    public ResponseEntity<User> updateUser(@PathVariable String id, @RequestBody UserDao user) {
+    public ResponseEntity<User> updateUser(@PathVariable("id") String id, @RequestBody UserDao user) {
         return ResponseEntity.ok(userService.updateUser(id, user));
     }
 
     @Operation(summary = "Used to delete a user matching an ID")
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable String id) {
+    public ResponseEntity<Void> deleteUser(@PathVariable("id") String id) {
         userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }

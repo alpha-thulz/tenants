@@ -40,7 +40,7 @@ public class BuildingController {
 
     @Operation(summary = "Used to register a building to a specific user")
     @PostMapping("/{userID}")
-    public ResponseEntity<Building> addBuilding(@PathVariable String userID, @RequestBody @Valid BuildingDao building) {
+    public ResponseEntity<Building> addBuilding(@PathVariable("userID") String userID, @RequestBody @Valid BuildingDao building) {
         return ResponseEntity.status(HttpStatus.CREATED).body(buildingService.createBuilding(userID, building));
     }
 
