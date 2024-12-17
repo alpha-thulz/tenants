@@ -21,7 +21,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @Operation(summary = "Used to get a list of all users")
+    @Operation(summary = "Used to get a list of all users", hidden = true)
     @GetMapping
     public ResponseEntity<List<User>> getUsers() {
         return ResponseEntity.ok(userService.getUsers());
