@@ -49,6 +49,7 @@
                             <td>Email</td>
                             <td>Enabled</td>
                             <td>Role</td>
+                            <td>Buildings owned</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -59,6 +60,7 @@
                             <td th:text="${user.getEmail()}"/>
                             <td th:text="${user.isEnabled()}"/>
                             <td th:text="${user.getRole()}"/>
+                            <td><a th:href="./building/${user.getId()}"></a></td>
                     </tbody>
                 </table>
             </div>
