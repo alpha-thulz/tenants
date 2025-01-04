@@ -37,34 +37,6 @@
                     <a href="https://github.com/alpha-thulz/tenants" target="_blank">Github</a>.
                 </p>
             </div>
-            <div>
-                <table class="table table-dark">
-                    <thead>
-                        <tr>
-                            <td colspan="7" style="text-align: center"><h3>Building Owners</h3></td>
-                        </tr>
-                        <tr>
-                            <td>Name</td>
-                            <td>Surname</td>
-                            <td>Username</td>
-                            <td>Email</td>
-                            <td>Enabled</td>
-                            <td>Role</td>
-                            <td>Buildings owned</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="user: ${users}">
-                            <td th:text="${user.getFirstname()}"/>
-                            <td th:text="${user.getLastname()}"/>
-                            <td th:text="${user.getUsername()}"/>
-                            <td th:text="${user.getEmail()}"/>
-                            <td th:text="${user.isEnabled()}"/>
-                            <td th:text="${user.getRole()}"/>
-                            <td><a th:href="${'./building/' + user.getId()}"><th:block th:text="${'View ' + user.getBuilding().size() + ' properties'}"></th:block></a></td>
-                    </tbody>
-                </table>
-            </div>
         </section>
     </body>
 </html>
