@@ -40,8 +40,8 @@ public class JWTService {
                 .signWith(getKey())
                 .compact();
 
-        return Map.of("accessToken", token,
-                "issuedAt", issuedAt,
+        return Map.of("access_token", token,
+                "issued_at", issuedAt,
                 "expiration", expiration);
     }
 
