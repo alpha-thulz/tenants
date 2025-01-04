@@ -10,6 +10,7 @@
         <section>
             <div>
                 <h1>Tenant Management System</h1>
+
                 <p>
                     This is the <strong>Tenant Management System</strong> application template which I created as my training ground for
                     API testing, coming soon will be a <strong>Web</strong> and <strong>Android</strong> application.
@@ -40,7 +41,7 @@
                 <table class="table table-dark">
                     <thead>
                         <tr>
-                            <td colspan="6" style="text-align: center"><h3>Building Owners</h3></td>
+                            <td colspan="7" style="text-align: center"><h3>Building Owners</h3></td>
                         </tr>
                         <tr>
                             <td>Name</td>
@@ -60,7 +61,7 @@
                             <td th:text="${user.getEmail()}"/>
                             <td th:text="${user.isEnabled()}"/>
                             <td th:text="${user.getRole()}"/>
-                            <td><a th:href="./building/${user.getId()}"></a></td>
+                            <td><a th:href="${'./building/' + user.getId()}"><th:block th:text="${'View ' + user.getBuilding().size() + ' properties'}"></th:block></a></td>
                     </tbody>
                 </table>
             </div>

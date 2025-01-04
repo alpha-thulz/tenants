@@ -18,11 +18,18 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -54,15 +61,26 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
+                .cors(httpSecurityCorsConfigurer -> {
+                    CorsConfiguration configuration = new CorsConfiguration();
+                    configuration.setAllowedOrigins(List.of("*"));
+                    configuration.setAllowedMethods(List.of("*"));
+                    configuration.setAllowedHeaders(List.of("*"));
+                    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+                    source.registerCorsConfiguration("/**", configuration);
+                    httpSecurityCorsConfigurer.configurationSource(source);
+                })
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/api/v1/users/login", "/api/v1/users/register",
-                                "/swagger-ui/**", "/v3/api-docs/**", "/v2/api-docs",
-                                "/configuration/ui",  "/swagger-resources/**",
-                                "/configuration/security", "/swagger-ui.html",
-                                "/webjars/**", "/").permitAll()
+                        .requestMatchers("/", "/validate", "/api/v1/users/login", "/api/v1/users/register",
+                                "/swagger-ui/**", "/v3/api-docs/**", "/v2/api-docs", "/configuration/ui",
+                                "/swagger-resources/**", "/configuration/security", "/swagger-ui.html",
+                                "/webjars/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())
+//                .formLogin(form -> form.loginPage("/login")
+//                        .defaultSuccessUrl("/", true).permitAll())
+//                .logout(LogoutConfigurer::permitAll)
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
