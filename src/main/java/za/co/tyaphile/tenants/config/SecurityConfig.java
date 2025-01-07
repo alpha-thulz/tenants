@@ -71,6 +71,7 @@ public class SecurityConfig {
                                 "/swagger-ui/**", "/v3/api-docs/**", "/v2/api-docs", "/configuration/ui",
                                 "/swagger-resources/**", "/configuration/security", "/swagger-ui.html",
                                 "/webjars/**").permitAll()
+                        .requestMatchers("/api/v1/users").hasAuthority("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())

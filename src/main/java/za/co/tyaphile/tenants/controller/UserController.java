@@ -3,6 +3,7 @@ package za.co.tyaphile.tenants.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @Operation(summary = "Used to get a list of all users")
+    @Operation(summary = "Used to get a list of all users", hidden = true)
     @GetMapping
     public ResponseEntity<List<User>> getUsers() {
         return ResponseEntity.ok(userService.getUsers());
@@ -37,7 +38,16 @@ public class UserController {
         }
     }
 
-    @Operation(summary = "Register a new user", security = {@SecurityRequirement(name = "bearer-key")})
+    @Operation(
+            summary = "Register a new user",
+            security = {@SecurityRequirement(name = "bearer-key")},
+            description = "Register a new user with any of the following roles" +
+                    "<ul>" +
+                    "   <li>MANAGER</li>" +
+                    "   <li>ADMIN</li>" +
+                    "   <li>TENANT</li>" +
+                    "</ul>"
+    )
     @PostMapping("/register")
     public ResponseEntity<Map<String, Object>> createUser(@RequestBody UserDao user) {
         return ResponseEntity.status(201).body(userService.createUser(user));
