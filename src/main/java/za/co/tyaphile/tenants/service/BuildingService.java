@@ -8,6 +8,7 @@ import za.co.tyaphile.tenants.model.User;
 import za.co.tyaphile.tenants.repo.BuildingRepo;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BuildingService {
@@ -21,8 +22,8 @@ public class BuildingService {
         this.userService = userService;
     }
 
-    public List<Building> getAllBuildings() {
-        return repo.findAll();
+    public List<Building> getAllBuildings(String ownerID) {
+        return repo.findAll().stream().filter(b -> b.getUser().getId().equals(ownerID)).collect(Collectors.toList());
     }
 
     public Building getBuildingById(String id) {

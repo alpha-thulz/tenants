@@ -24,16 +24,16 @@ public class BuildingController {
     }
 
     @Operation(summary = "Used to get all buildings")
-    @GetMapping
-    public ResponseEntity<List<Building>> getAllProperties() {
-        List<Building> buildings = buildingService.getAllBuildings();
+    @GetMapping("/{userId}")
+    public ResponseEntity<List<Building>> getAllProperties(@PathVariable String userId) {
+        List<Building> buildings = buildingService.getAllBuildings(userId);
         if (buildings.isEmpty())
             return ResponseEntity.noContent().build();
         return ResponseEntity.ok(buildings);
     }
 
     @Operation(summary = "Used to get a building matching building ID")
-    @GetMapping("/{buildingId}")
+    @GetMapping("/building/{buildingId}")
     public ResponseEntity<Building> getBuildingById(@PathVariable("buildingId") String building_id) {
         return ResponseEntity.ok(buildingService.getBuildingById(building_id));
     }
